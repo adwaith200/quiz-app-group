@@ -264,6 +264,10 @@ body {
           transform: scaleX(1.05);
 }
 
+.profile_link {
+  text-decoration: none;
+}
+
 .body {
   height: 100vh;
 }

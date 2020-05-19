@@ -4,7 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "watch:js": "parcel watch ./templates/js/index.js --out-dir ./templates/js --out-file bundle.js",
+    "build:js": "parcel build ./templates/js/index.js --out-dir ./templates/js --out-file bundle.js"
   },
   "author": "adwaith",
   "license": "ISC",
@@ -23,6 +25,7 @@
     "validator": "^13.0.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "parcel-bundler": "^1.12.4"
   }
 }
