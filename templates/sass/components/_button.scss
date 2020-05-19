@@ -1,20 +1,4 @@
-.container{
-  &__startTestBtn{
-    font-size:1.6rem;
-    border:none;
-    color:$color-grey-primary;
-    font-weight: 600;
-    padding:1rem 2rem;
-    border-radius:50px;
-    transition:all .3s;
-    outline:none;
-    &:hover,
-    &:active{
-      transform: scaleX(1.05);
-      
-    } 
-  }
-}
+
 
 .loginBtn{
   border:none;
@@ -60,6 +44,24 @@
   &_submit{
     grid-column:1/span2;
   }
+}
+
+.startTestlink{
+     font-size:1.6rem;
+     border:1px solid transparent;
+     background-color: $color-white-primary;
+     color:$color-grey-primary;
+     font-weight: 600;
+     padding:1rem 2rem;
+     border-radius:50px;
+     transition:all .3s;
+     text-decoration:none;
+     &:hover,
+     &:active{
+       transform: scaleX(1.05);
+      
+     } 
+    
 }
 
 

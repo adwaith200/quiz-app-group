@@ -191,23 +191,6 @@ body {
           transform: scaleX(1.05);
 }
 
-.container__startTestBtn {
-  font-size: 1.6rem;
-  border: none;
-  color: #18262B;
-  font-weight: 600;
-  padding: 1rem 2rem;
-  border-radius: 50px;
-  -webkit-transition: all .3s;
-  transition: all .3s;
-  outline: none;
-}
-
-.container__startTestBtn:hover, .container__startTestBtn:active {
-  -webkit-transform: scaleX(1.05);
-          transform: scaleX(1.05);
-}
-
 .loginBtn {
   border: none;
   padding: 1rem 2rem;
@@ -261,6 +244,24 @@ body {
 
 .buttons_submit {
   grid-column: 1/span2;
+}
+
+.startTestlink {
+  font-size: 1.6rem;
+  border: 1px solid transparent;
+  background-color: #F2F2F2;
+  color: #18262B;
+  font-weight: 600;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  -webkit-transition: all .3s;
+  transition: all .3s;
+  text-decoration: none;
+}
+
+.startTestlink:hover, .startTestlink:active {
+  -webkit-transform: scaleX(1.05);
+          transform: scaleX(1.05);
 }
 
 .body {
