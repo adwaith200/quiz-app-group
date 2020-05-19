@@ -1,0 +1,36 @@
+.profile{
+&_body{
+    height:100vh;
+}
+
+&_container{
+  //  margin:4rem auto;
+
+    display:grid;
+    width:50rem;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    grid-template-columns:1fr;
+    grid-template-rows:1fr 1fr 1rem 1fr 1fr 1rem 1fr 4rem;
+}
+
+&_details{
+    display:grid;
+    grid-template-columns:1fr;
+    grid-template-rows:repeat(3,1fr);
+    grid-row-gap: 1.5rem;
+   
+}
+&_gotohome{
+    padding:0 3rem ;
+}
+&_heading{
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    grid-row:1/span 3;
+}
+
+}

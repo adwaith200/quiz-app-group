@@ -1,0 +1,25 @@
+ .body{
+   height:100vh;
+ }
+.header{
+    display:flex;
+    justify-content: space-between;
+    padding:2rem 1rem;
+}
+
+.container{
+  display:grid;
+  grid-template-rows: repeat(2,1fr);
+  grid-template-columns:repeat(1,min-content(100px,1fr));
+  &__heading{
+    grid-column:span 1;
+    justify-self: center;
+    align-self: center;
+  }
+  &__startTestBtn{
+    grid-row:2/3;
+    grid-column:span 1;
+    justify-self: center;
+    align-self:start;
+  }
+}

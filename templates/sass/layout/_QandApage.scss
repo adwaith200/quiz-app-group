@@ -1,0 +1,19 @@
+.qa{
+    &_container{
+        display:flex;
+        flex-direction:column;
+       
+        width:70vw;
+        margin:5rem auto;
+    
+        
+    }
+    &_box{
+        padding:1rem 5rem 0rem 5rem;
+        &:not(:last-child){
+        align-self: center;
+    }
+       margin-bottom: 1.3rem;
+    }
+
+}

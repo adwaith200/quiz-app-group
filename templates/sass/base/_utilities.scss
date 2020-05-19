@@ -1,0 +1,17 @@
+//Everything here is reusable
+
+.gotohomePageLink{
+    text-decoration:none;
+    font-size:1.6rem;
+    font-weight:600;
+    color:$color-green-secondary;
+   // border-bottom:1px solid rgba($color-green-tertiary,.5);
+   
+    transition: all .3s;
+    
+    &:active,
+    &:hover{
+      transform: scaleX(1.05);
+      
+    } 
+}

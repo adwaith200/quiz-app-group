@@ -1,0 +1,47 @@
+//Header section
+
+.header{
+    background-color:$color-grey-primary;
+}
+
+//container section for home page
+.container{
+    height:100%;
+    background-image: linear-gradient( to right,
+                                     rgba($color-green-secondary, .85) ,
+                                     rgba($color-green-tertiary, .85),
+                                     ) ,
+                                     url(../../images/homePageImage.jpg);
+    background-size:cover;
+    height:100%;
+    width:100%;
+    background-repeat:no-repeat ;
+    object-fit:cover;
+}
+
+//container for login page
+
+.containerLogin{
+  
+  box-shadow: $box-shadow;
+  border:0px;
+  border-radius:15px;
+  overflow:hidden;
+  
+}
+
+.profile{
+    &_container{
+      box-shadow: $box-shadow;
+      border:0px;
+      border-radius:15px;
+      overflow:hidden;
+    }
+  
+}
+
+.qa_container{
+  box-shadow:$box-shadow;
+  border-radius:15px;
+      overflow:hidden;
+}
