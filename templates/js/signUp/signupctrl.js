@@ -7,7 +7,7 @@ import Signup from './signupmodel';
 //const signup=new Signup()
 
 
-export const signupctrl=()=>{
+export const signupctrl=async ()=>{
 
 
     const name=signupView.nameValidity();
@@ -16,7 +16,7 @@ export const signupctrl=()=>{
     const passwordconfirm=signupView.confirmpasswordValidity();
 
     const signupobj=new Signup(name,email,password,passwordconfirm);
-    signupobj.uploadSignupData();
+    await signupobj.uploadSignupData();
 
 
 //     //  name issue

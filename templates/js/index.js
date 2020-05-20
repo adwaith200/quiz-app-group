@@ -4,9 +4,9 @@ import {signupctrl} from './signUp/signupctrl';
 
 if(ele.signupform)
 {
-    document.querySelector('.signUpBtn').addEventListener("click",e=>{
+    document.querySelector('.signUpBtn').addEventListener("click",async (e)=>{
         e.preventDefault();
-        signupctrl();
+        await signupctrl();
     });
 
 }

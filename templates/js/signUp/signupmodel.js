@@ -1,3 +1,4 @@
+import axios from 'axios'
 export default class Signup{
     constructor(name,email,password,confirmPassword){
         this.name=name;
@@ -6,8 +7,19 @@ export default class Signup{
         this.confirmPassword=confirmPassword;
     }
 
-     uploadSignupData(){
-        console.log(this.name,this.email,this.password,this.confirmPassword);
+    async uploadSignupData(){
+        // const data=await axios({
+        //     method:'POST',
+        //     url:'127.0.0.1:3000/user/signup',
+        //     data:{
+        //         name:this.name,
+        //         email:this.email,
+        //         password:this.password,
+        //         passwordconfirm:this.passwordconfirm
+        //     }
+        // });
+        const data=await axios('127.0.0.1:3000/questions');
+        console.log(data);
     }
 }
 
