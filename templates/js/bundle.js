@@ -117,7 +117,18 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"views/base.js":[function(require,module,exports) {
+})({"baseglobal.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ele = void 0;
+const ele = {
+  signupform: document.querySelector('.signup_form')
+};
+exports.ele = ele;
+},{}],"signUp/baseSignup.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -132,15 +143,15 @@ const elements = {
   confirmPassword: document.getElementById('confirm_password')
 };
 exports.elements = elements;
-},{}],"views/signupView.js":[function(require,module,exports) {
+},{}],"signUp/signupviews.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.showSuccess = exports.showError = void 0;
+exports.confirmpasswordValidity = exports.passwordValidity = exports.emailValidity = exports.nameValidity = exports.showSuccess = exports.showError = void 0;
 
-var _base = require("../views/base");
+var _baseSignup = require("./baseSignup");
 
 const showError = (input, message, small, type) => {
   const parentInput = input.parentElement;
@@ -156,55 +167,159 @@ const showSuccess = (input, type) => {
   const parentInput = input.parentElement;
   parentInput.className = " input success";
   document.querySelector(`.${type}`).className = `login_form--input ${type} success`;
-};
+}; //name issue
+
 
 exports.showSuccess = showSuccess;
-},{"../views/base":"views/base.js"}],"index.js":[function(require,module,exports) {
+
+const nameValidity = () => {
+  if (_baseSignup.elements.name.value === "") {
+    console.log('error name');
+    showError(_baseSignup.elements.name, "Name not entered", "small_name", "name");
+  } else {
+    showSuccess(_baseSignup.elements.name, "name");
+    return _baseSignup.elements.name.value;
+  }
+}; //email Issue
+
+
+exports.nameValidity = nameValidity;
+
+const emailValidity = () => {
+  if (_baseSignup.elements.email.value === "") {
+    console.log(_baseSignup.elements.email);
+    console.log('error email');
+    showError(_baseSignup.elements.email, "Email not entered", "small_email", "email");
+  } else {
+    showSuccess(_baseSignup.elements.email, "email");
+    return _baseSignup.elements.email.value;
+  }
+}; //password issue
+
+
+exports.emailValidity = emailValidity;
+
+const passwordValidity = () => {
+  if (_baseSignup.elements.password.value === "") {
+    showError(_baseSignup.elements.password, "password not entered", "small_password", "password");
+  } else {
+    showSuccess(_baseSignup.elements.password, "password");
+    return _baseSignup.elements.password.value;
+  }
+}; //confirm password issue
+
+
+exports.passwordValidity = passwordValidity;
+
+const confirmpasswordValidity = () => {
+  if (_baseSignup.elements.confirmPassword.value === "") {
+    showError(_baseSignup.elements.confirmPassword, "Confirm password", "small_confirmpassword", "confirmPassword");
+  } else {
+    showSuccess(_baseSignup.elements.confirmPassword, "confirmPassword");
+    return _baseSignup.elements.confirmPassword.value;
+  }
+};
+
+exports.confirmpasswordValidity = confirmpasswordValidity;
+},{"./baseSignup":"signUp/baseSignup.js"}],"signUp/signupmodel.js":[function(require,module,exports) {
 "use strict";
 
-var _base = require("../js/views/base");
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
 
-var signupView = _interopRequireWildcard(require("../js/views/signupView"));
+class Signup {
+  constructor(name, email, password, confirmPassword) {
+    this.name = name;
+    this.email = email;
+    this.password = password;
+    this.confirmPassword = confirmPassword;
+  }
+
+  uploadSignupData() {
+    console.log(this.name, this.email, this.password, this.confirmPassword);
+  }
+
+}
+
+exports.default = Signup;
+},{}],"signUp/signupctrl.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.signupctrl = void 0;
+
+var _baseSignup = require("./baseSignup");
+
+var signupView = _interopRequireWildcard(require("./signupviews"));
+
+var _signupmodel = _interopRequireDefault(require("./signupmodel"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 //signup controller 
-document.querySelector('.signUpBtn').addEventListener("click", e => {
-  e.preventDefault(); //  name issue
+//const signup=new Signup()
+const signupctrl = () => {
+  const name = signupView.nameValidity();
+  const email = signupView.emailValidity();
+  const password = signupView.passwordValidity();
+  const passwordconfirm = signupView.confirmpasswordValidity();
+  const signupobj = new _signupmodel.default(name, email, password, passwordconfirm);
+  signupobj.uploadSignupData(); //     //  name issue
+  //     if(elements.name.value===""){
+  //         console.log('error name');
+  //         signupView.showError(elements.name,"Name not entered","small_name","name");
+  //     }
+  //     else{
+  //         signupView.showSuccess(elements.name,"name");
+  //     }
+  //     //email Issue
+  //     if(elements.email.value===""){
+  //         console.log(elements.email);
+  //         console.log('error email');
+  //         signupView.showError(elements.email,"Email not entered","small_email","email");
+  //     }
+  //     else{
+  //         signupView.showSuccess(elements.email,"email");
+  //     }
+  //     //password issue
+  //     if(elements.password.value===""){
+  //         signupView.showError(elements.password,"password not entered","small_password","password");
+  //     }
+  //     else{
+  //         signupView.showSuccess(elements.password,"password");
+  //     }
+  //     //confirm password issue
+  //     if(elements.confirmPassword.value===""){
+  //         signupView.showError(elements.confirmPassword,"Confirm password","small_confirmpassword","confirmPassword");
+  //     }
+  //     else{
+  //         signupView.showSuccess(elements.password,"confirmPassword");
+  //     }
+};
 
-  if (_base.elements.name.value === "") {
-    console.log('error name');
-    signupView.showError(_base.elements.name, "Name not entered", "small_name", "name");
-  } else {
-    signupView.showSuccess(_base.elements.name, "name");
-  } //email Issue
+exports.signupctrl = signupctrl;
+},{"./baseSignup":"signUp/baseSignup.js","./signupviews":"signUp/signupviews.js","./signupmodel":"signUp/signupmodel.js"}],"index.js":[function(require,module,exports) {
+"use strict";
 
+var _baseglobal = require("./baseglobal");
 
-  if (_base.elements.email.value === "") {
-    console.log(_base.elements.email);
-    console.log('error email');
-    signupView.showError(_base.elements.email, "Email not entered", "small_email", "email");
-  } else {
-    signupView.showSuccess(_base.elements.email, "email");
-  } //password issue
+var _signupctrl = require("./signUp/signupctrl");
 
-
-  if (_base.elements.password.value === "") {
-    signupView.showError(_base.elements.password, "password not entered", "small_password", "password");
-  } else {
-    signupView.showSuccess(_base.elements.password, "password");
-  } //confirm password issue
-
-
-  if (_base.elements.confirmPassword.value === "") {
-    signupView.showError(_base.elements.confirmPassword, "Confirm password", "small_confirmpassword", "confirmPassword");
-  } else {
-    signupView.showSuccess(_base.elements.password, "confirmPassword");
-  }
-});
-},{"../js/views/base":"views/base.js","../js/views/signupView":"views/signupView.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+if (_baseglobal.ele.signupform) {
+  document.querySelector('.signUpBtn').addEventListener("click", e => {
+    e.preventDefault();
+    (0, _signupctrl.signupctrl)();
+  });
+}
+},{"./baseglobal":"baseglobal.js","./signUp/signupctrl":"signUp/signupctrl.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -232,7 +347,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65007" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55659" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
