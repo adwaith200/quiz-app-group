@@ -80,6 +80,30 @@ exports.login=async(req,res,next)=>{
     }
 }
 
+exports.isloggedin=async(req,res,next)=>{
+    //Check if cookie exists
+    if(req.cookies.jwt)
+    {
+        try{
+            //Verify the jwt token
+            const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
+            //Get the user based on id inside token
+            const user=await User.findById(decoded.id);
+            //If user doesnt exist continue
+            if(!user)
+            {
+                return next();
+            }
+            //Send data to pug templates
+            res.locals.user=user;
+            return next();
+        }catch(err)
+        {
+            return next();
+        }
+    }
+    next();
+}
 //Implements logout feature
 exports.logout=(req,res)=>{
     res.cookie('jwt','helloo',{

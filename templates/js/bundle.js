@@ -2005,18 +2005,25 @@ class Signup {
   }
 
   async uploadSignupData() {
-    // const data=await axios({
-    //     method:'POST',
-    //     url:'127.0.0.1:3000/user/signup',
-    //     data:{
-    //         name:this.name,
-    //         email:this.email,
-    //         password:this.password,
-    //         passwordconfirm:this.passwordconfirm
-    //     }
-    // });
-    const data = await (0, _axios.default)('127.0.0.1:3000/questions');
-    console.log(data);
+    try {
+      const data = await (0, _axios.default)({
+        method: 'POST',
+        url: 'http://127.0.0.1:3000/user/signup',
+        data: {
+          name: this.name,
+          email: this.email,
+          password: this.password,
+          passwordconfirm: this.confirmPassword
+        }
+      });
+      console.log(data);
+
+      if (data.data.status === 'success') {
+        location.assign('/profile');
+      }
+    } catch (err) {
+      console.log(err.response);
+    }
   }
 
 }
@@ -2125,7 +2132,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55659" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64871" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
