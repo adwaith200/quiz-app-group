@@ -125,7 +125,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ele = void 0;
 const ele = {
-  signupform: document.querySelector('.signup_form')
+  signupform: document.querySelector('.signup_form'),
+  logout: document.querySelector('.logoutbtn')
 };
 exports.ele = ele;
 },{}],"signUp/baseSignup.js":[function(require,module,exports) {
@@ -140,7 +141,8 @@ const elements = {
   name: document.getElementById('name'),
   email: document.getElementById('email'),
   password: document.getElementById('password'),
-  confirmPassword: document.getElementById('confirm_password')
+  confirmPassword: document.getElementById('confirm_password'),
+  photo: document.getElementById('photo')
 };
 exports.elements = elements;
 },{}],"signUp/signupviews.js":[function(require,module,exports) {
@@ -1997,31 +1999,42 @@ var _axios = _interopRequireDefault(require("axios"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 class Signup {
-  constructor(name, email, password, confirmPassword) {
+  constructor(name, email, password, confirmPassword, photo) {
     this.name = name;
     this.email = email;
     this.password = password;
     this.confirmPassword = confirmPassword;
+    this.photo = photo;
   }
 
   async uploadSignupData() {
     try {
+      const formmdata = new FormData();
+      formmdata.append('name', this.name);
+      formmdata.append('email', this.email);
+      formmdata.append('password', this.password);
+      formmdata.append('passwordconfirm', this.confirmPassword);
+      formmdata.append('photo', this.photo);
       const data = await (0, _axios.default)({
         method: 'POST',
         url: 'http://127.0.0.1:3000/user/signup',
-        data: {
-          name: this.name,
-          email: this.email,
-          password: this.password,
-          passwordconfirm: this.confirmPassword
-        }
+        data: formmdata
       });
-      console.log(data);
+      console.log(data); //console.log('hello',data.data.status);
+
+      console.log('hello'); // {
+      //     name:this.name,
+      //     email:this.email,
+      //     password:this.password,
+      //     passwordconfirm:this.confirmPassword
+      // }
 
       if (data.data.status === 'success') {
+        console.log('hi');
         location.assign('/profile');
       }
     } catch (err) {
+      console.log('hello');
       console.log(err.response);
     }
   }
@@ -2056,7 +2069,8 @@ const signupctrl = async () => {
   const email = signupView.emailValidity();
   const password = signupView.passwordValidity();
   const passwordconfirm = signupView.confirmpasswordValidity();
-  const signupobj = new _signupmodel.default(name, email, password, passwordconfirm);
+  const photo = _baseSignup.elements.photo.files[0];
+  const signupobj = new _signupmodel.default(name, email, password, passwordconfirm, photo);
   await signupobj.uploadSignupData(); //     //  name issue
   //     if(elements.name.value===""){
   //         console.log('error name');
@@ -2091,12 +2105,37 @@ const signupctrl = async () => {
 };
 
 exports.signupctrl = signupctrl;
-},{"./baseSignup":"signUp/baseSignup.js","./signupviews":"signUp/signupviews.js","./signupmodel":"signUp/signupmodel.js"}],"index.js":[function(require,module,exports) {
+},{"./baseSignup":"signUp/baseSignup.js","./signupviews":"signUp/signupviews.js","./signupmodel":"signUp/signupmodel.js"}],"logout/logoutctrl.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.logoutctrl = void 0;
+
+var _axios = _interopRequireDefault(require("axios"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const logoutctrl = async () => {
+  try {
+    const userdata = await (0, _axios.default)('http://127.0.0.1:3000/user/logout');
+    console.log(userdata);
+    location.reload(true);
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+
+exports.logoutctrl = logoutctrl;
+},{"axios":"../../node_modules/axios/index.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _baseglobal = require("./baseglobal");
 
 var _signupctrl = require("./signUp/signupctrl");
+
+var _logoutctrl = require("./logout/logoutctrl");
 
 if (_baseglobal.ele.signupform) {
   document.querySelector('.signUpBtn').addEventListener("click", async e => {
@@ -2104,7 +2143,11 @@ if (_baseglobal.ele.signupform) {
     await (0, _signupctrl.signupctrl)();
   });
 }
-},{"./baseglobal":"baseglobal.js","./signUp/signupctrl":"signUp/signupctrl.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+
+if (_baseglobal.ele.logout) {
+  _baseglobal.ele.logout.addEventListener('click', _logoutctrl.logoutctrl);
+}
+},{"./baseglobal":"baseglobal.js","./signUp/signupctrl":"signUp/signupctrl.js","./logout/logoutctrl":"logout/logoutctrl.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -2132,7 +2175,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64871" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51661" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

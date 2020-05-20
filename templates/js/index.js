@@ -1,6 +1,6 @@
 import {ele} from './baseglobal';
 import {signupctrl} from './signUp/signupctrl';
-
+import {logoutctrl} from './logout/logoutctrl';
 
 if(ele.signupform)
 {
@@ -9,4 +9,8 @@ if(ele.signupform)
         await signupctrl();
     });
 
+}
+if(ele.logout)
+{
+    ele.logout.addEventListener('click',logoutctrl)
 }

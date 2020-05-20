@@ -9,13 +9,13 @@ import Signup from './signupmodel';
 
 export const signupctrl=async ()=>{
 
-
+ 
     const name=signupView.nameValidity();
     const email=signupView.emailValidity();
     const password=signupView.passwordValidity();
     const passwordconfirm=signupView.confirmpasswordValidity();
-
-    const signupobj=new Signup(name,email,password,passwordconfirm);
+    const photo=elements.photo.files[0];
+    const signupobj=new Signup(name,email,password,passwordconfirm,photo);
     await signupobj.uploadSignupData();
 
 

@@ -4,7 +4,8 @@ export const elements={
     email:document.getElementById('email'),
     password:document.getElementById('password'),
     confirmPassword:document.getElementById('confirm_password'),
+    photo:document.getElementById('photo')
 }
-
+ 
 
 

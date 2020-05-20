@@ -15,6 +15,7 @@ exports.signup=async(req,res,next)=>{
         let userdata;
         if(req.file)
         {
+            
             userdata=await User.create({                          //An account is created based on details 
                 name,
                 email,
@@ -26,6 +27,7 @@ exports.signup=async(req,res,next)=>{
         }
         else
         {
+            
             userdata=await User.create({                          //An account is created based on details 
                 name,
                 email,
@@ -108,7 +110,7 @@ exports.isloggedin=async(req,res,next)=>{
 exports.logout=(req,res)=>{
     res.cookie('jwt','helloo',{
         expires:new Date(Date.now()+1000*10),
-        httpOnly
+        httpOnly:true
     });
     res.json({
         status:'success',

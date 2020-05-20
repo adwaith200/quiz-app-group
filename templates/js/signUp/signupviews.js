@@ -56,7 +56,7 @@ export const passwordValidity=()=>{
       showSuccess(elements.password,"password");
       return elements.password.value;
 
-   }
+   } 
 }
 //confirm password issue
 
