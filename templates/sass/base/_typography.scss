@@ -46,6 +46,8 @@
 
 }
 
+
+//home page
 .container{
   color:$color-white-primary;
   font-size:2.5rem; 
@@ -55,6 +57,9 @@
   }
 }
 
+
+
+//login page 
 .login_heading{
   text-align:center;
   background-image: linear-gradient( to right,
@@ -80,8 +85,8 @@
    transition :all .5s;
    border-bottom: 3px solid transparent;
   &:focus{
-    outline: none;
-    border-bottom: 3px solid $color-green-secondary;
+    outline: 0;
+    //  border-bottom: 3px solid $color-grey-primary;
   }
   &::-webkit-input-placeholder {
            color:$color-grey-secondary;
@@ -90,6 +95,34 @@
    
  }
 }
+
+//For javascript purposes
+.input small{
+  font-size:1.2rem;
+ color:red;           //for error messages
+ //  visibility:hidden;
+  display:none;
+}
+
+.login_form--input.success{
+
+  border-bottom: 3px solid $color-green-tertiary;  //for validity
+
+}
+
+.login_form--input.error{
+
+   border-bottom: 3px solid red;     //for invalidity
+}
+
+.input.error small{
+  display:block;         //for error message
+}
+
+
+
+
+//profile page
 .profile{
     &_heading{
       background-image: linear-gradient( to right,
@@ -116,11 +149,14 @@
 
   }
 }
+
+
+
+//Q and A page
 .question{
   text-align:center;
   font-size:1.8rem;
   color:$color-grey-primary;
-
 }
 
 .qa{
@@ -128,3 +164,4 @@
     font-size:1.8rem;
   }
 }
+
