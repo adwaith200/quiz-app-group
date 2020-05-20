@@ -110,12 +110,29 @@ body {
 }
 
 .login_form--input:focus {
-  outline: none;
-  border-bottom: 3px solid #57BA98;
+  outline: 0;
 }
 
 .login_form--input::-webkit-input-placeholder {
   color: rgba(58, 78, 85, 0.8);
+}
+
+.input small {
+  font-size: 1.2rem;
+  color: red;
+  display: none;
+}
+
+input.success {
+  border-bottom: 3px solid #65CCBB;
+}
+
+input.error {
+  border-bottom: 3px solid red;
+}
+
+.input.error small {
+  display: block;
 }
 
 .profile_heading {
