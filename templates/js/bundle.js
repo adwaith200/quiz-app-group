@@ -126,7 +126,10 @@ Object.defineProperty(exports, "__esModule", {
 exports.ele = void 0;
 const ele = {
   signupform: document.querySelector('.signup_form'),
-  logout: document.querySelector('.logoutbtn')
+  logout: document.querySelector('.logoutbtn'),
+  login: document.querySelector('.login_part'),
+  forgotpass: document.querySelector('.forgotpassword_form'),
+  resetpass: document.querySelector('.resetpassword_form')
 };
 exports.ele = ele;
 },{}],"signUp/baseSignup.js":[function(require,module,exports) {
@@ -192,6 +195,10 @@ const emailValidity = () => {
     console.log(_baseSignup.elements.email);
     console.log('error email');
     showError(_baseSignup.elements.email, "Email not entered", "small_email", "email");
+    return false;
+  } else if (!_baseSignup.elements.email.value.includes('@')) {
+    showError(_baseSignup.elements.email, "Not a valid Email", "small_email", "email");
+    return false;
   } else {
     showSuccess(_baseSignup.elements.email, "email");
     return _baseSignup.elements.email.value;
@@ -204,6 +211,10 @@ exports.emailValidity = emailValidity;
 const passwordValidity = () => {
   if (_baseSignup.elements.password.value === "") {
     showError(_baseSignup.elements.password, "password not entered", "small_password", "password");
+    return false;
+  } else if (_baseSignup.elements.password.value.length < 6) {
+    showError(_baseSignup.elements.password, "Password must have atleast 6 characters", "small_password", "password");
+    return false;
   } else {
     showSuccess(_baseSignup.elements.password, "password");
     return _baseSignup.elements.password.value;
@@ -216,6 +227,11 @@ exports.passwordValidity = passwordValidity;
 const confirmpasswordValidity = () => {
   if (_baseSignup.elements.confirmPassword.value === "") {
     showError(_baseSignup.elements.confirmPassword, "Confirm password", "small_confirmpassword", "confirmPassword");
+    return false;
+  } else if (_baseSignup.elements.confirmPassword.value !== _baseSignup.elements.password.value) {
+    showError(_baseSignup.elements.password, "Passwords don't match", "small_password", "password");
+    showError(_baseSignup.elements.confirmPassword, "Passwords don't match", "small_confirmpassword", "confirmPassword");
+    return false;
   } else {
     showSuccess(_baseSignup.elements.confirmPassword, "confirmPassword");
     return _baseSignup.elements.confirmPassword.value;
@@ -2020,21 +2036,12 @@ class Signup {
         url: 'http://127.0.0.1:3000/user/signup',
         data: formmdata
       });
-      console.log(data); //console.log('hello',data.data.status);
-
-      console.log('hello'); // {
-      //     name:this.name,
-      //     email:this.email,
-      //     password:this.password,
-      //     passwordconfirm:this.confirmPassword
-      // }
+      console.log(data);
 
       if (data.data.status === 'success') {
-        console.log('hi');
         location.assign('/profile');
       }
     } catch (err) {
-      console.log('hello');
       console.log(err.response);
     }
   }
@@ -2065,43 +2072,35 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 //signup controller 
 //const signup=new Signup()
 const signupctrl = async () => {
-  const name = signupView.nameValidity();
-  const email = signupView.emailValidity();
-  const password = signupView.passwordValidity();
-  const passwordconfirm = signupView.confirmpasswordValidity();
+  let name, email, passwordconfirm, password;
+
+  if (signupView.nameValidity() === false) {
+    return;
+  } else {
+    name = signupView.nameValidity();
+  }
+
+  if (signupView.emailValidity() === false) {
+    return;
+  } else {
+    email = signupView.emailValidity();
+  }
+
+  if (signupView.passwordValidity() === false) {
+    return;
+  } else {
+    password = signupView.passwordValidity();
+  }
+
+  if (signupView.confirmpasswordValidity() === false) {
+    return;
+  } else {
+    passwordconfirm = signupView.confirmpasswordValidity();
+  }
+
   const photo = _baseSignup.elements.photo.files[0];
   const signupobj = new _signupmodel.default(name, email, password, passwordconfirm, photo);
-  await signupobj.uploadSignupData(); //     //  name issue
-  //     if(elements.name.value===""){
-  //         console.log('error name');
-  //         signupView.showError(elements.name,"Name not entered","small_name","name");
-  //     }
-  //     else{
-  //         signupView.showSuccess(elements.name,"name");
-  //     }
-  //     //email Issue
-  //     if(elements.email.value===""){
-  //         console.log(elements.email);
-  //         console.log('error email');
-  //         signupView.showError(elements.email,"Email not entered","small_email","email");
-  //     }
-  //     else{
-  //         signupView.showSuccess(elements.email,"email");
-  //     }
-  //     //password issue
-  //     if(elements.password.value===""){
-  //         signupView.showError(elements.password,"password not entered","small_password","password");
-  //     }
-  //     else{
-  //         signupView.showSuccess(elements.password,"password");
-  //     }
-  //     //confirm password issue
-  //     if(elements.confirmPassword.value===""){
-  //         signupView.showError(elements.confirmPassword,"Confirm password","small_confirmpassword","confirmPassword");
-  //     }
-  //     else{
-  //         signupView.showSuccess(elements.password,"confirmPassword");
-  //     }
+  await signupobj.uploadSignupData();
 };
 
 exports.signupctrl = signupctrl;
@@ -2128,6 +2127,263 @@ const logoutctrl = async () => {
 };
 
 exports.logoutctrl = logoutctrl;
+},{"axios":"../../node_modules/axios/index.js"}],"login/baseLogin.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.elements = void 0;
+const elements = {
+  form: document.getElementById('form'),
+  email: document.getElementById('email'),
+  password: document.getElementById('password')
+};
+exports.elements = elements;
+},{}],"login/loginViews.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.credentialsError = exports.passwordValidity = exports.emailValidity = exports.showSuccess = exports.showError = void 0;
+
+var _baseLogin = require("./baseLogin");
+
+const showError = (input, message, small, type) => {
+  const parentInput = input.parentElement;
+  parentInput.className = " input error";
+  const text = document.querySelector(`.${small}`);
+  text.innerText = message;
+  document.querySelector(`.${type}`).className = `login_form--input ${type} error`;
+};
+
+exports.showError = showError;
+
+const showSuccess = (input, type) => {
+  const parentInput = input.parentElement;
+  parentInput.className = " input success";
+  document.querySelector(`.${type}`).className = `login_form--input ${type} success`;
+}; //email Issue
+
+
+exports.showSuccess = showSuccess;
+
+const emailValidity = () => {
+  if (_baseLogin.elements.email.value === "") {
+    console.log(_baseLogin.elements.email);
+    console.log('error email');
+    showError(_baseLogin.elements.email, "Email not entered", "small_email", "email");
+    return false;
+  } else if (!_baseLogin.elements.email.value.includes('@')) {
+    showError(_baseLogin.elements.email, "Not a valid Email", "small_email", "email");
+    return false;
+  } else {
+    showSuccess(_baseLogin.elements.email, "email");
+    return _baseLogin.elements.email.value;
+  }
+}; //password issue
+
+
+exports.emailValidity = emailValidity;
+
+const passwordValidity = () => {
+  if (_baseLogin.elements.password.value === "") {
+    showError(_baseLogin.elements.password, "password not entered", "small_password", "password");
+    return false;
+  } else {
+    showSuccess(_baseLogin.elements.password, "password");
+    return _baseLogin.elements.password.value;
+  }
+};
+
+exports.passwordValidity = passwordValidity;
+
+const credentialsError = () => {
+  showError(_baseLogin.elements.email, "Check email", "small_email", "email");
+  showError(_baseLogin.elements.password, "Check password", "small_password", "password");
+};
+
+exports.credentialsError = credentialsError;
+},{"./baseLogin":"login/baseLogin.js"}],"login/loginmodel.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _axios = _interopRequireDefault(require("axios"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+class Login {
+  constructor(email, password) {
+    this.email = email;
+    this.password = password;
+  }
+
+  async uploadloginData() {
+    try {
+      console.log(this.email, this.password); // const formmdata=new FormData();
+      // formmdata.append('email',this.email);
+      // formmdata.append('password',this.password);
+
+      const data = await (0, _axios.default)({
+        method: 'POST',
+        url: 'http://127.0.0.1:3000/user/login',
+        data: {
+          email: this.email,
+          password: this.password
+        }
+      });
+      console.log(data);
+
+      if (data.data.status === 'success') {
+        location.assign('/profile');
+      }
+
+      if (data.data.message === 'Invalid credentials entered') {
+        return false;
+      }
+
+      return true;
+    } catch (err) {
+      console.log(err.response);
+    }
+  }
+
+}
+
+exports.default = Login;
+},{"axios":"../../node_modules/axios/index.js"}],"login/loginCtrl.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.loginctrl = void 0;
+
+var _baseLogin = require("./baseLogin");
+
+var loginView = _interopRequireWildcard(require("./loginViews"));
+
+var _loginmodel = _interopRequireDefault(require("./loginmodel"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+//login controller 
+const loginctrl = async () => {
+  let email, password;
+
+  if (loginView.emailValidity() === false) {
+    return;
+  } else {
+    email = loginView.emailValidity();
+  }
+
+  if (loginView.passwordValidity() === false) {
+    return;
+  } else {
+    password = loginView.passwordValidity();
+  }
+
+  const loginobj = new _loginmodel.default(email, password);
+
+  if ((await loginobj.uploadloginData()) === false) {
+    loginView.credentialsError();
+  }
+};
+
+exports.loginctrl = loginctrl;
+},{"./baseLogin":"login/baseLogin.js","./loginViews":"login/loginViews.js","./loginmodel":"login/loginmodel.js"}],"forgotpass/baseforgotpass.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.element = void 0;
+const element = {
+  emailform: document.querySelector('.email')
+};
+exports.element = element;
+},{}],"forgotpass/forgotpass.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.forgotpassword = void 0;
+
+var _baseforgotpass = require("./baseforgotpass");
+
+var _axios = _interopRequireDefault(require("axios"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const forgotpassword = async () => {
+  try {
+    const email = _baseforgotpass.element.emailform.value;
+    console.log(email);
+    const userdata = await (0, _axios.default)({
+      method: 'PATCH',
+      url: 'http://127.0.0.1:3000/user/forgotpassword',
+      data: {
+        email
+      }
+    });
+
+    if (userdata.data.status === 'success') {
+      alert(userdata.data.message);
+    }
+
+    console.log(userdata);
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+
+exports.forgotpassword = forgotpassword;
+},{"./baseforgotpass":"forgotpass/baseforgotpass.js","axios":"../../node_modules/axios/index.js"}],"forgotpass/resetpassword.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.resetpassword = void 0;
+
+var _axios = _interopRequireDefault(require("axios"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const resetpassword = async () => {
+  try {
+    const password = document.querySelector('.password').value;
+    const passwordconfirm = document.querySelector('.confirmPassword').value;
+    const token = window.location.search.slice(1, window.location.search.length);
+    const userdata = await (0, _axios.default)({
+      method: 'PATCH',
+      url: `http://127.0.0.1:3000/user/resetpassword/${token}`,
+      data: {
+        password: password,
+        passwordconfirm: passwordconfirm
+      }
+    });
+    console.log(userdata);
+
+    if (userdata.data.status === 'success') {
+      location.assign('/profile');
+    }
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+
+exports.resetpassword = resetpassword;
 },{"axios":"../../node_modules/axios/index.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
@@ -2137,7 +2393,14 @@ var _signupctrl = require("./signUp/signupctrl");
 
 var _logoutctrl = require("./logout/logoutctrl");
 
+var _loginCtrl = require("./login/loginCtrl");
+
+var _forgotpass = require("./forgotpass/forgotpass");
+
+var _resetpassword = require("./forgotpass/resetpassword");
+
 if (_baseglobal.ele.signupform) {
+  console.log('hello');
   document.querySelector('.signUpBtn').addEventListener("click", async e => {
     e.preventDefault();
     await (0, _signupctrl.signupctrl)();
@@ -2147,7 +2410,28 @@ if (_baseglobal.ele.signupform) {
 if (_baseglobal.ele.logout) {
   _baseglobal.ele.logout.addEventListener('click', _logoutctrl.logoutctrl);
 }
-},{"./baseglobal":"baseglobal.js","./signUp/signupctrl":"signUp/signupctrl.js","./logout/logoutctrl":"logout/logoutctrl.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+
+if (_baseglobal.ele.login) {
+  document.querySelector('.loginbtn').addEventListener("click", async e => {
+    e.preventDefault();
+    await (0, _loginCtrl.loginctrl)();
+  });
+}
+
+if (_baseglobal.ele.forgotpass) {
+  document.querySelector('.forgotpassbtn').addEventListener('click', async e => {
+    e.preventDefault();
+    await (0, _forgotpass.forgotpassword)();
+  });
+}
+
+if (_baseglobal.ele.resetpass) {
+  document.querySelector('.restpassbtn').addEventListener('click', e => {
+    e.preventDefault();
+    (0, _resetpassword.resetpassword)();
+  });
+}
+},{"./baseglobal":"baseglobal.js","./signUp/signupctrl":"signUp/signupctrl.js","./logout/logoutctrl":"logout/logoutctrl.js","./login/loginCtrl":"login/loginCtrl.js","./forgotpass/forgotpass":"forgotpass/forgotpass.js","./forgotpass/resetpassword":"forgotpass/resetpassword.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -2175,7 +2459,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51661" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60804" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

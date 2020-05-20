@@ -59,9 +59,11 @@ exports.signup=async(req,res,next)=>{
 exports.login=async(req,res,next)=>{
     try{
         const {email,password}=req.body;                //Details are extracted from req.body
+        console.log(req.body);
         const userdata=await User.findOne({email:email}).select('password');       //An existing account search based on email
         if(!userdata ||!await userdata.checkpassword(password,userdata.password))       //Checked if account exists and password entered matches with one stored in database
         {
+            console.log(userdata);
             return next(new Apperror('Invalid credentials entered',404));           //If not found,an error is sent
         }
         const token=jwt.sign({id:userdata.id},process.env.JWT_SECRET);       //If details match then a token is signed for authentication
@@ -132,7 +134,8 @@ exports.protect=async(req,res,next)=>{
         }
         else
         {
-            return next(new Apperror('Please login to continue',401));  //Returns an error if token is not present in request headers
+            res.redirect(`http://127.0.0.1:3000/login`);
+            //return next(new Apperror('Please login to continue',401));  //Returns an error if token is not present in request headers
         }
         const userid=await promisify(jwt.verify)(token,process.env.JWT_SECRET); //The token details are extracted by verifying the token body
         const userdata=await User.findById(userid.id);              //The user id is extracted from token's details and user data is found
@@ -176,7 +179,7 @@ exports.forgotpassword=async(req,res,next)=>{
         userdata.save({validateBeforeSave:false});      //Changes for passwordresettoken is applied in database
         const options={                                 //Email options such a send email and url to redirect is defined
             to:email,
-            url:`${req.protocol}://${req.get('host')}/resetpassword/${token}`
+            url:`${req.protocol}://${req.get('host')}/resetpassword?${token}`
         };
         try{
             await new Email(options).passwordreset();   //Email is sent with the above details

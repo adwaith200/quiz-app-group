@@ -15,23 +15,26 @@
             <h1 class="login_heading">
                 p Login
             </h1>
-            <form class=" login_form">
-                <div class=" input name_input ">
+            <form class="login_form login_part">
+                <div class=" input email_input ">
                     <label for="email" class="login_form--label">Email-id </label>
-                    <input type="email" class="login_form--input" placeholder="Email" id="email" required>
-                    <small>Error Message</small>
+                    <input type="email" class="login_form--input email" placeholder="Email" id="email" required>
+                    <small class="small_email">Error Message</small>
                 </div>
                 <div class=" input password_input">
                     <label for="password" class="login_form--label">Password</label> 
-                    <input type="password" class="login_form--input" placeholder="Password" id="password" required>
-                    <small>Error Message</small>
-
+                    <input type="password" class="login_form--input password" placeholder="Password" id="password" required>
+                    <small class="small_password">Error message</small>
                 </div>
+                <a href="/forgotpassword" class="gotohomePageLink">Forgot password</a>
+                <button class="input loginBtn loginbtn">Login</button>
 
-                <button class="input loginBtn">Login</button>
+
                 <a href="/" class="gotohomePageLink">&larr; Go To Home Page</a>
+
             </form> 
         </div>
     </div>
+    <script src="js/bundle.js"></script>
 </body>
 </html>

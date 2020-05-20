@@ -22,23 +22,13 @@ export default class Signup{
                 data:formmdata
             });
             console.log(data)
-            //console.log('hello',data.data.status);
-            console.log('hello');
-            // {
-            //     name:this.name,
-            //     email:this.email,
-            //     password:this.password,
-            //     passwordconfirm:this.confirmPassword
-            // }
             if(data.data.status==='success')
             {
-                console.log('hi');
                 location.assign('/profile');
             }
         }
         catch(err)
         {
-            console.log('hello');
             console.log(err.response);
         }
     }

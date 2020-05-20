@@ -37,6 +37,11 @@ export const emailValidity=()=>{
       console.log(elements.email);
       console.log('error email');
       showError(elements.email,"Email not entered","small_email","email");
+      return false;
+   }
+   else if(!elements.email.value.includes('@')){
+      showError(elements.email,"Not a valid Email","small_email","email");
+      return false;
    }
    else{
       showSuccess(elements.email,"email");
@@ -48,9 +53,14 @@ export const emailValidity=()=>{
 //password issue
 export const passwordValidity=()=>{
    if(elements.password.value===""){
-   
-   
       showError(elements.password,"password not entered","small_password","password");
+      return false;
+
+   }
+   else if (elements.password.value.length<6){
+      showError(elements.password,"Password must have atleast 6 characters","small_password","password");
+      return false;
+
    }
    else{
       showSuccess(elements.password,"password");
@@ -63,9 +73,15 @@ export const passwordValidity=()=>{
 export const confirmpasswordValidity=()=>{
 
    if(elements.confirmPassword.value===""){
-   
-   
+      
       showError(elements.confirmPassword,"Confirm password","small_confirmpassword","confirmPassword");
+      return false;
+   }
+   else if(elements.confirmPassword.value!==elements.password.value){
+      showError(elements.password,"Passwords don't match","small_password","password");
+
+      showError(elements.confirmPassword,"Passwords don't match","small_confirmpassword","confirmPassword");
+      return false;
    }
    else{
       showSuccess(elements.confirmPassword,"confirmPassword");

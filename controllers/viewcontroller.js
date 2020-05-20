@@ -32,3 +32,17 @@ exports.showquestionpage=(req,res)=>{
         title:'Questions page'
     })
 }
+
+//Renders the forgot password page
+exports.showforgotpasswordpage=(req,res)=>{
+    res.render('forgotpassword',{
+        title:'Forgot Password'
+    });
+}
+
+//Renders the reset password page
+exports.showresetpasswordpage=(req,res)=>{
+    res.render('resetpassword',{
+        title:'Reset Password'
+    });
+}
