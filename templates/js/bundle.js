@@ -2413,13 +2413,16 @@ exports.getData = getData;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.elements = void 0;
+exports.ques_element = exports.elements = void 0;
 const elements = {
   marks: document.querySelector('.testmarks'),
   question: document.querySelector('.question'),
-  profile_link: document.querySelector('.profile_link')
+  profile_link: document.querySelector('.profile_link'),
+  question_container: document.querySelector(".question_container")
 };
 exports.elements = elements;
+const ques_element = `<p>Haven't taken any quiz yet? </p>`;
+exports.ques_element = ques_element;
 },{}],"profile/profileViews.js":[function(require,module,exports) {
 "use strict";
 
@@ -2432,12 +2435,12 @@ var _baseprofile = require("./baseprofile");
 
 const showdata = data => {
   if (data.firsttime === true) {
-    console.log(_baseprofile.elements);
-    console.log(_baseprofile.elements.marks);
     _baseprofile.elements.marks.style.display = 'none';
+
+    _baseprofile.elements.question_container.insertAdjacentHTML("afterbegin", _baseprofile.ques_element);
   } else {
     _baseprofile.elements.marks.style.display = 'block';
-    _baseprofile.elements.question.innerHTML = "";
+    _baseprofile.elements.question_container.innerHTMl = "";
     _baseprofile.elements.profile_link.textContent = "Retake test";
   }
 };
