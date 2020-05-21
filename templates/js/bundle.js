@@ -129,7 +129,8 @@ const ele = {
   logout: document.querySelector('.logoutbtn'),
   login: document.querySelector('.login_part'),
   forgotpass: document.querySelector('.forgotpassword_form'),
-  resetpass: document.querySelector('.resetpassword_form')
+  resetpass: document.querySelector('.resetpassword_form'),
+  profile: document.querySelector(".profile_body")
 };
 exports.ele = ele;
 },{}],"signUp/baseSignup.js":[function(require,module,exports) {
@@ -2384,7 +2385,84 @@ const resetpassword = async () => {
 };
 
 exports.resetpassword = resetpassword;
-},{"axios":"../../node_modules/axios/index.js"}],"index.js":[function(require,module,exports) {
+},{"axios":"../../node_modules/axios/index.js"}],"profile/profilemodel.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getData = void 0;
+
+var _axios = _interopRequireDefault(require("axios"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const getData = async () => {
+  try {
+    const result = await (0, _axios.default)('http://127.0.0.1:3000/user/getme');
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+exports.getData = getData;
+},{"axios":"../../node_modules/axios/index.js"}],"profile/baseprofile.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.elements = void 0;
+const elements = {
+  marks: document.querySelector('.testmarks'),
+  question: document.querySelector('.question'),
+  profile_link: document.querySelector('.profile_link')
+};
+exports.elements = elements;
+},{}],"profile/profileViews.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.showdata = void 0;
+
+var _baseprofile = require("./baseprofile");
+
+const showdata = data => {
+  if (data.firsttime === true) {
+    console.log(_baseprofile.elements);
+    console.log(_baseprofile.elements.marks);
+    _baseprofile.elements.marks.style.display = 'none';
+  } else {
+    _baseprofile.elements.marks.style.display = 'block';
+    _baseprofile.elements.question.innerHTML = "";
+    _baseprofile.elements.profile_link.textContent = "Retake test";
+  }
+};
+
+exports.showdata = showdata;
+},{"./baseprofile":"profile/baseprofile.js"}],"profile/profileCtrl.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.profilectrl = void 0;
+
+var _profilemodel = require("./profilemodel");
+
+var _profileViews = require("./profileViews");
+
+const profilectrl = async () => {
+  const data = await (0, _profilemodel.getData)();
+  const result = data.data.data.userdata;
+  (0, _profileViews.showdata)(result);
+};
+
+exports.profilectrl = profilectrl;
+},{"./profilemodel":"profile/profilemodel.js","./profileViews":"profile/profileViews.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _baseglobal = require("./baseglobal");
@@ -2398,6 +2476,8 @@ var _loginCtrl = require("./login/loginCtrl");
 var _forgotpass = require("./forgotpass/forgotpass");
 
 var _resetpassword = require("./forgotpass/resetpassword");
+
+var _profileCtrl = require("./profile/profileCtrl");
 
 if (_baseglobal.ele.signupform) {
   console.log('hello');
@@ -2431,7 +2511,11 @@ if (_baseglobal.ele.resetpass) {
     (0, _resetpassword.resetpassword)();
   });
 }
-},{"./baseglobal":"baseglobal.js","./signUp/signupctrl":"signUp/signupctrl.js","./logout/logoutctrl":"logout/logoutctrl.js","./login/loginCtrl":"login/loginCtrl.js","./forgotpass/forgotpass":"forgotpass/forgotpass.js","./forgotpass/resetpassword":"forgotpass/resetpassword.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+
+if (_baseglobal.ele.profile) {
+  (0, _profileCtrl.profilectrl)().then(res => console.log('final', res)).catch(err => console.log(err));
+}
+},{"./baseglobal":"baseglobal.js","./signUp/signupctrl":"signUp/signupctrl.js","./logout/logoutctrl":"logout/logoutctrl.js","./login/loginCtrl":"login/loginCtrl.js","./forgotpass/forgotpass":"forgotpass/forgotpass.js","./forgotpass/resetpassword":"forgotpass/resetpassword.js","./profile/profileCtrl":"profile/profileCtrl.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -2459,7 +2543,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60804" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49249" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -89,3 +89,19 @@ exports.updatemarks=async(req,res,next)=>{
         next(err);
     }
 }
+
+//Sends the user data
+exports.getuserdata=async(req,res,next)=>{
+    try{
+        const userdata=await User.findById(req.user.id);
+        res.json({
+            status:'success',
+            data:{
+                userdata
+            }
+        });
+    }catch(err)
+    {
+        next(err);
+    }
+}

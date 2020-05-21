@@ -4,6 +4,8 @@ import {logoutctrl} from './logout/logoutctrl';
 import {loginctrl} from './login/loginCtrl';
 import {forgotpassword} from './forgotpass/forgotpass';
 import {resetpassword} from './forgotpass/resetpassword';
+import {profilectrl} from './profile/profileCtrl';
+
  
 if(ele.signupform)
 {
@@ -42,4 +44,9 @@ if(ele.resetpass)
         e.preventDefault();
         resetpassword();
     })
+}
+
+if(ele.profile){
+    
+    profilectrl().then(res=>console.log('final',res)).catch(err=>console.log(err));
 }

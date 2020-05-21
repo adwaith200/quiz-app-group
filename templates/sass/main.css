@@ -123,11 +123,11 @@ body {
   display: none;
 }
 
-input.success {
+.login_form--input.success {
   border-bottom: 3px solid #65CCBB;
 }
 
-input.error {
+.login_form--input.error {
   border-bottom: 3px solid red;
 }
 
@@ -390,8 +390,9 @@ input.error {
           transform: translate(-50%, -50%);
   -ms-grid-columns: 1fr;
       grid-template-columns: 1fr;
-  -ms-grid-rows: 1fr 1fr 1rem 1fr 1fr 1rem 1fr 4rem;
-      grid-template-rows: 1fr 1fr 1rem 1fr 1fr 1rem 1fr 4rem;
+  -ms-grid-rows: 1fr 1fr 1rem 1fr 1fr min-content 1fr 4rem;
+      grid-template-rows: 1fr 1fr 1rem 1fr 1fr -webkit-min-content 1fr 4rem;
+      grid-template-rows: 1fr 1fr 1rem 1fr 1fr min-content 1fr 4rem;
 }
 
 .profile_details {
