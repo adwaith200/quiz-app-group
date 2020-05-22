@@ -2427,26 +2427,7 @@ exports.ques_element = ques_element;
 },{}],"profile/profileViews.js":[function(require,module,exports) {
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.showdata = void 0;
-
 var _baseprofile = require("./baseprofile");
-
-const showdata = data => {
-  if (data.firsttime === true) {
-    _baseprofile.elements.marks.style.display = 'none';
-
-    _baseprofile.elements.question_container.insertAdjacentHTML("afterbegin", _baseprofile.ques_element);
-  } else {
-    _baseprofile.elements.marks.style.display = 'block';
-    _baseprofile.elements.question_container.innerHTMl = "";
-    _baseprofile.elements.profile_link.textContent = "Retake test";
-  }
-};
-
-exports.showdata = showdata;
 },{"./baseprofile":"profile/baseprofile.js"}],"profile/profileCtrl.js":[function(require,module,exports) {
 "use strict";
 
@@ -2472,7 +2453,7 @@ exports.profilectrl = profilectrl;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getData = void 0;
+exports.senddata = exports.getData = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
 
@@ -2481,6 +2462,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 const getData = async () => {
   try {
     const result = await (0, _axios.default)('http://127.0.0.1:3000/questions');
+    console.log(result);
     return result.data.data.questiondata;
   } catch (error) {
     console.log(error);
@@ -2488,6 +2470,24 @@ const getData = async () => {
 };
 
 exports.getData = getData;
+
+const senddata = async count => {
+  try {
+    const userdata = await (0, _axios.default)({
+      method: 'PATCH',
+      url: 'http://127.0.0.1:3000/user/updatemarks',
+      data: {
+        marks: count
+      }
+    });
+    console.log(userdata);
+    return userdata;
+  } catch (err) {
+    console.log(err.response);
+  }
+};
+
+exports.senddata = senddata;
 },{"axios":"../../node_modules/axios/index.js"}],"QandA/baseque.js":[function(require,module,exports) {
 "use strict";
 
@@ -2505,26 +2505,89 @@ exports.elements = elements;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.clearResults = clearResults;
 exports.default = void 0;
 
 var _baseque = require("./baseque");
+
+console.log(_baseque.elements.profile_details);
+
+async function clearResults() {
+  _baseque.elements.qa_body.innerHTML = "";
+  document.querySelector('.buttons').innerHTML = "";
+}
+
+function createButtons(page, type) {
+  const button = `<button class="buttons_paginationBtn" data-goto=${type === 'prev' ? page - 1 : page + 1}">
+                 <span>page-${type === 'prev' ? page - 1 : page + 1}</span>
+     </button>`;
+  return button;
+}
+
+function displayButtons(data, page, limit) {
+  const totalquestions = data.length;
+  const pages = totalquestions / limit;
+  let buttons;
+
+  if (page == 1) {
+    buttons = createButtons(page, 'next');
+  } else {
+    buttons = createButtons(page, 'prev');
+  }
+
+  document.querySelector('.buttons').insertAdjacentHTML("afterbegin", buttons);
+}
 
 class Questions {
   constructor(data) {
     this.data = data;
   }
 
-  showquestions() {
-    this.data.forEach((e, i) => _baseque.elements.qa_body.insertAdjacentHTML('beforeend', `<div class="qa_box">
-                 <span class="qa_box--question">${i + 1}. ${e.question}</span>
-                    <div class="qa_box--option-1"><input type="radio" name="quesion1" value="1">${e.option1}</div>
-                    <div class="qa_box--option-2"><input type="radio" name="quesion1" value="2">${e.option2} </div>
-                    <div class="qa_box--option-3"><input type="radio" name="quesion1" value="3">${e.option3} </div>
-                    <div class="qa_box--option-4"><input type="radio" name="quesion1" value="4"> ${e.option4}</div>
-        </div>`) //end of html insertion
-    ); //end of loop
-  } //end of function
+  showquestions(page = 1, limit = 5) {
+    let start = (page - 1) * limit;
+    let end = page * limit;
+    const totalquestions = this.data.length;
 
+    if (totalquestions == limit) {
+      this.data.forEach((e, i) => {
+        _baseque.elements.qa_body.insertAdjacentHTML('beforeend', `<div class="qa_box">
+                    <span class="qa_box--question">${start + i + 1}. ${e.question}</span>
+                        <div class="qa_box--option-1"><input type="radio" class="class-${i + 1}" name="quesion${i + 1}" value="${e.option1}">${e.option1}</div>
+                        <div class="qa_box--option-2"><input type="radio"  class="class-${i + 1}" name="quesion${i + 1}" value="${e.option2}">${e.option2} </div>
+                        <div class="qa_box--option-3"><input type="radio" class="class-${i + 1}" name="quesion${i + 1}" value="${e.option3}">${e.option3} </div>
+                        <div class="qa_box--option-4"><input type="radio"  class="class-${i + 1}" name="quesion${i + 1}" value="${e.option4}"> ${e.option4}</div>
+            </div>`); //end of html insertion
+
+      }); //end of loop
+    } else if (totalquestions > limit) {
+      this.data.slice(start, end).forEach((e, i) => {
+        _baseque.elements.qa_body.insertAdjacentHTML('beforeend', `<div class="qa_box">
+                    <span class="qa_box--question">${start + i + 1}. ${e.question}</span>
+                        <div class="qa_box--option-1"><input type="radio" class="class-${start + i + 1}" name="quesion${start + i + 1}" value="${e.option1}">${e.option1}</div>
+                        <div class="qa_box--option-2"><input type="radio" class="class-${start + i + 1}" name="quesion${start + i + 1}" value="${e.option2}">${e.option2} </div>
+                        <div class="qa_box--option-3"><input type="radio" class="class-${start + i + 1}" name="quesion${start + i + 1}" value="${e.option3}">${e.option3} </div>
+                        <div class="qa_box--option-4"><input type="radio" class="class-${start + i + 1}" name="quesion${start + i + 1}" value="${e.option4}"> ${e.option4}</div>
+            </div>`); //end of html
+
+      }); //end of loop
+    }
+
+    displayButtons(this.data, page, limit);
+  } //end of showfunction
+  // displaymarks(count){
+  //     console.log(elements.profile_details);
+  //     elements.profile_details.insertAdjacentHTML("beforeend",`<span class="testmarks">Marks: ${count}/10</span>`);
+  // }
+
+
+  sendtoprofile(result) {
+    console.log('hello');
+    console.log(result.data.status);
+
+    if (result.data.status === 'success') {
+      location.assign('/profile');
+    }
+  }
 
 }
 
@@ -2539,15 +2602,66 @@ exports.quectrl = void 0;
 
 var _modelque = require("./modelque");
 
-var _queviews = _interopRequireDefault(require("./queviews"));
+var _queviews = _interopRequireWildcard(require("./queviews"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 const quectrl = async () => {
   const data = await (0, _modelque.getData)();
   console.log(data);
   const questionsobj = new _queviews.default(data);
   questionsobj.showquestions();
+
+  const evaluate = async options => {
+    let count = 0;
+    options.forEach((e, i) => {
+      if (e === data[i].answer) {
+        count++;
+      }
+    });
+    console.log(count);
+    const result = await (0, _modelque.senddata)(count);
+    questionsobj.sendtoprofile(result); // questionsobj.displaymarks(count);
+  }; //    const persistData=(value)=>{
+  //          localStorage.setItem('values', value);
+  //    }
+
+
+  document.querySelector('.buttons').addEventListener('click', e => {
+    let btn = e.target.closest('.buttons_paginationBtn');
+
+    if (btn) {
+      let goToPage = parseInt(btn.dataset.goto);
+      (0, _queviews.clearResults)();
+      questionsobj.showquestions(goToPage);
+    }
+  });
+  document.querySelector('.submit_data').addEventListener('click', () => {
+    let selectedValue = [];
+    data.forEach((e, i) => {
+      const rbs = document.querySelectorAll(`.class-${i + 1}`);
+
+      for (const rb of rbs) {
+        if (rb.checked) {
+          selectedValue[i] = rb.value; // persistData( selectedValue[i]);
+
+          break;
+        }
+      }
+    }); // persistData() {
+    //     localStorage.setItem('likes', JSON.stringify(this.likes));
+    // }
+    // readStorage() {
+    //     const storage = JSON.parse(localStorage.getItem('likes'));
+    //     // Restoring likes from the localStorage
+    //     if (storage) this.likes = storage;
+    // }
+
+    selectedValue.forEach(e => console.log(e));
+    evaluate(selectedValue);
+  });
 };
 
 exports.quectrl = quectrl;

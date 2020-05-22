@@ -18,15 +18,19 @@
 }
 
 .buttons{
-  display:grid;
-  padding:3rem;
-  grid-template-columns:1FR 1FR;
-  grid-template-rows:1FR 1FR;
-  grid-gap:10px;
+  // display:grid;
+  // padding:3rem;
+  // grid-template-columns:1FR 1FR;
+ 
+  // grid-gap:10px;
 
   &_paginationBtn{
-    align-self:center;
-    justify-self:center;
+    // align-self:center;
+    // grid-column: 1/span 2;
+    // justify-self:center;
+    display:block;
+    margin:1rem auto;
+
     padding:1rem;
     background-color:$color-green-tertiary;
     color:$color-white-primary;
@@ -44,6 +48,11 @@
   &_submit{
     grid-column:1/span2;
   }
+}
+.button_container{
+  display: flex;
+  justify-content: center;
+  align-self: center;
 }
 
 .startTestlink{

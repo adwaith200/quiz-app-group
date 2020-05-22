@@ -22,16 +22,23 @@
                     img(src=`/images/users/${user.photo}` alt="profile" class="profile_image")
             </div> 
             <div class="profile_details">
-                    <span class="profile_name">Name: #{user.name}</span>
-                    <span class="profile_mail">Email: #{user.email}</span>
-                    <span class="testmarks">Marks: 10/10</span>
+                <span class="profile_name">Name: #{user.name}</span>
+                <span class="profile_mail">Email: #{user.email}</span>
+                .try
+                    -if(user.firsttime==false)
+                        <span class="testmarks">Marks: #{user.marks}/10</span>
             </div>
             <div class="question_container question"> 
-                //- p Haven't taken any quiz yet?
+                -if(user.firsttime==true)
+                    p Haven't taken any quiz yet?
             </div>
             //-  <p class="question">Haven't taken any quiz yet?</p>
             //- <button class="loginBtn profileTestBtn">Start the Test &rarr;</button>
-            <a class="loginBtn profileTestBtn profile_link" href="/qanda">Start the Test &rarr;</a>
+            .button_container
+                -if(user.firsttime===true)
+                    <a class="loginBtn profileTestBtn profile_link" href="/qanda">Start the Test &rarr;</a>
+                -else
+                    <a class="loginBtn profileTestBtn profile_link" href="/qanda">Retake Test &rarr;</a>
             <a href="/" class="gotohomePageLink profile_gotohome">&larr; Go To Home Page</a>
         </div>
     </div>

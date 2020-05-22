@@ -71,7 +71,7 @@ exports.checkfirsttimetest=async(req,res,next)=>{
         next(err);
     }
 }
-
+ 
 //Update marks
 exports.updatemarks=async(req,res,next)=>{
     try{

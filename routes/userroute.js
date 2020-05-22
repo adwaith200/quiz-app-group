@@ -15,6 +15,6 @@ router.route('/forgotpassword').patch(authcontroller.forgotpassword);   //This r
 router.route('/resetpassword/:token').patch(authcontroller.resetpassword);  //This route is for resetpassword page
 router.route('/updatemarks').patch(authcontroller.protect,usercontroller.updatemarks); //This route is for updating marks of user
 router.route('/getme').get(authcontroller.protect,usercontroller.getuserdata);
-
+ 
 //Sends the router to app.js 
 module.exports=router; 

@@ -226,23 +226,9 @@ body {
           transform: translateY(-0.3rem);
 }
 
-.buttons {
-  display: -ms-grid;
-  display: grid;
-  padding: 3rem;
-  -ms-grid-columns: 1FR 1FR;
-      grid-template-columns: 1FR 1FR;
-  -ms-grid-rows: 1FR 1FR;
-      grid-template-rows: 1FR 1FR;
-  grid-gap: 10px;
-}
-
 .buttons_paginationBtn {
-  -ms-flex-item-align: center;
-      -ms-grid-row-align: center;
-      align-self: center;
-  -ms-grid-column-align: center;
-      justify-self: center;
+  display: block;
+  margin: 1rem auto;
   padding: 1rem;
   background-color: #65CCBB;
   color: #F2F2F2;
@@ -261,6 +247,17 @@ body {
 
 .buttons_submit {
   grid-column: 1/span2;
+}
+
+.button_container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-flex-item-align: center;
+      align-self: center;
 }
 
 .startTestlink {
@@ -433,7 +430,7 @@ body {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  width: 70vw;
+  width: 60vw;
   margin: 5rem auto;
 }
 
