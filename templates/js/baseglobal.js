@@ -4,5 +4,6 @@ export const ele={
     login:document.querySelector('.login_part'),
     forgotpass:document.querySelector('.forgotpassword_form'),
     resetpass:document.querySelector('.resetpassword_form'),
-    profile:document.querySelector(".profile_body")
+    profile:document.querySelector(".profile_body"),
+    qa_container:document.querySelector('.qa_container')
 };

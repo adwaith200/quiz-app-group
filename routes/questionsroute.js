@@ -11,7 +11,7 @@ const router=express.Router();
 
 //Default route
 router.route('/')
-    .get(usercontroller.checkfirsttimetest,questionscontroller.getallquestions)
+    .get(authcontroller.protect,usercontroller.checkfirsttimetest,questionscontroller.getallquestions)
     .post(authcontroller.protect,authcontroller.restrictto,questionscontroller.createquestion)
     .delete(authcontroller.protect,authcontroller.restrictto,questionscontroller.deleteallquestions);
 

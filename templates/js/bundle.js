@@ -130,7 +130,8 @@ const ele = {
   login: document.querySelector('.login_part'),
   forgotpass: document.querySelector('.forgotpassword_form'),
   resetpass: document.querySelector('.resetpassword_form'),
-  profile: document.querySelector(".profile_body")
+  profile: document.querySelector(".profile_body"),
+  qa_container: document.querySelector('.qa_container')
 };
 exports.ele = ele;
 },{}],"signUp/baseSignup.js":[function(require,module,exports) {
@@ -2465,7 +2466,92 @@ const profilectrl = async () => {
 };
 
 exports.profilectrl = profilectrl;
-},{"./profilemodel":"profile/profilemodel.js","./profileViews":"profile/profileViews.js"}],"index.js":[function(require,module,exports) {
+},{"./profilemodel":"profile/profilemodel.js","./profileViews":"profile/profileViews.js"}],"QandA/modelque.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getData = void 0;
+
+var _axios = _interopRequireDefault(require("axios"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const getData = async () => {
+  try {
+    const result = await (0, _axios.default)('http://127.0.0.1:3000/questions');
+    return result.data.data.questiondata;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+exports.getData = getData;
+},{"axios":"../../node_modules/axios/index.js"}],"QandA/baseque.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.elements = void 0;
+const elements = {
+  qa_body: document.querySelector('.qa_body')
+};
+exports.elements = elements;
+},{}],"QandA/queviews.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _baseque = require("./baseque");
+
+class Questions {
+  constructor(data) {
+    this.data = data;
+  }
+
+  showquestions() {
+    this.data.forEach((e, i) => _baseque.elements.qa_body.insertAdjacentHTML('beforeend', `<div class="qa_box">
+                 <span class="qa_box--question">${i + 1}. ${e.question}</span>
+                    <div class="qa_box--option-1"><input type="radio" name="quesion1" value="1">${e.option1}</div>
+                    <div class="qa_box--option-2"><input type="radio" name="quesion1" value="2">${e.option2} </div>
+                    <div class="qa_box--option-3"><input type="radio" name="quesion1" value="3">${e.option3} </div>
+                    <div class="qa_box--option-4"><input type="radio" name="quesion1" value="4"> ${e.option4}</div>
+        </div>`) //end of html insertion
+    ); //end of loop
+  } //end of function
+
+
+}
+
+exports.default = Questions;
+},{"./baseque":"QandA/baseque.js"}],"QandA/queCtrl.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.quectrl = void 0;
+
+var _modelque = require("./modelque");
+
+var _queviews = _interopRequireDefault(require("./queviews"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const quectrl = async () => {
+  const data = await (0, _modelque.getData)();
+  console.log(data);
+  const questionsobj = new _queviews.default(data);
+  questionsobj.showquestions();
+};
+
+exports.quectrl = quectrl;
+},{"./modelque":"QandA/modelque.js","./queviews":"QandA/queviews.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _baseglobal = require("./baseglobal");
@@ -2481,6 +2567,8 @@ var _forgotpass = require("./forgotpass/forgotpass");
 var _resetpassword = require("./forgotpass/resetpassword");
 
 var _profileCtrl = require("./profile/profileCtrl");
+
+var _queCtrl = require("./QandA/queCtrl");
 
 if (_baseglobal.ele.signupform) {
   console.log('hello');
@@ -2518,7 +2606,11 @@ if (_baseglobal.ele.resetpass) {
 if (_baseglobal.ele.profile) {
   (0, _profileCtrl.profilectrl)().then(res => console.log('final', res)).catch(err => console.log(err));
 }
-},{"./baseglobal":"baseglobal.js","./signUp/signupctrl":"signUp/signupctrl.js","./logout/logoutctrl":"logout/logoutctrl.js","./login/loginCtrl":"login/loginCtrl.js","./forgotpass/forgotpass":"forgotpass/forgotpass.js","./forgotpass/resetpassword":"forgotpass/resetpassword.js","./profile/profileCtrl":"profile/profileCtrl.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+
+if (_baseglobal.ele.qa_container) {
+  (0, _queCtrl.quectrl)();
+}
+},{"./baseglobal":"baseglobal.js","./signUp/signupctrl":"signUp/signupctrl.js","./logout/logoutctrl":"logout/logoutctrl.js","./login/loginCtrl":"login/loginCtrl.js","./forgotpass/forgotpass":"forgotpass/forgotpass.js","./forgotpass/resetpassword":"forgotpass/resetpassword.js","./profile/profileCtrl":"profile/profileCtrl.js","./QandA/queCtrl":"QandA/queCtrl.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -2546,7 +2638,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49249" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53813" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
