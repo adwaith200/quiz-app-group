@@ -2608,9 +2608,11 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
+let globalselected = [];
+
 const quectrl = async () => {
-  const data = await (0, _modelque.getData)();
-  console.log(data);
+  const data = await (0, _modelque.getData)(); //console.log(data);
+
   const questionsobj = new _queviews.default(data);
   questionsobj.showquestions();
 
@@ -2629,13 +2631,30 @@ const quectrl = async () => {
   //    }
 
 
+  const persistData = (value, i) => {
+    i = i + 1;
+    localStorage.setItem(`class-${i}`, JSON.stringify(value));
+  };
+
   document.querySelector('.buttons').addEventListener('click', e => {
     let btn = e.target.closest('.buttons_paginationBtn');
 
     if (btn) {
+      data.forEach((e, i) => {
+        const rbs = document.querySelectorAll(`.class-${i + 1}`);
+
+        for (const rb of rbs) {
+          if (rb.checked) {
+            globalselected[i] = rb.value;
+            persistData(globalselected[i], i);
+            break;
+          }
+        }
+      });
       let goToPage = parseInt(btn.dataset.goto);
       (0, _queviews.clearResults)();
       questionsobj.showquestions(goToPage);
+      showchecked();
     }
   });
   document.querySelector('.submit_data').addEventListener('click', () => {
@@ -2645,26 +2664,46 @@ const quectrl = async () => {
 
       for (const rb of rbs) {
         if (rb.checked) {
-          selectedValue[i] = rb.value; // persistData( selectedValue[i]);
-
+          selectedValue[i] = rb.value;
+          persistData(selectedValue[i], i);
           break;
         }
       }
-    }); // persistData() {
-    //     localStorage.setItem('likes', JSON.stringify(this.likes));
-    // }
-    // readStorage() {
+    }); // readStorage() {
     //     const storage = JSON.parse(localStorage.getItem('likes'));
     //     // Restoring likes from the localStorage
     //     if (storage) this.likes = storage;
     // }
 
     selectedValue.forEach(e => console.log(e));
-    evaluate(selectedValue);
+
+    if (globalselected.length === 0) {
+      evaluate(selectedValue);
+    } else {
+      evaluate(globalselected);
+    }
   });
 };
 
 exports.quectrl = quectrl;
+
+const showchecked = () => {
+  for (let i = 0; i < localStorage.length; ++i) {
+    let j = i + 1;
+    console.log(localStorage.key(i));
+    const key = localStorage.key(i);
+    const array = document.querySelectorAll(`.${localStorage.key(i)}`); //console.log(array);
+
+    array.forEach(ele => {
+      console.log(typeof ele.value, typeof localStorage.getItem(key), `"${ele.value}"` == localStorage.getItem(key));
+
+      if (`"${ele.value}"` == localStorage.getItem(key)) {
+        ele.checked = true;
+        console.log('hey');
+      }
+    });
+  }
+};
 },{"./modelque":"QandA/modelque.js","./queviews":"QandA/queviews.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
@@ -2752,7 +2791,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53813" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65200" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

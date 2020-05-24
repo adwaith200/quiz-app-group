@@ -59,7 +59,7 @@ export default class Questions{
             </div>`)//end of html insertion
             })//end of loop
         }
-
+ 
         else if(totalquestions>limit){
             this.data.slice(start,end).forEach((e,i)=>{
                 elements.qa_body.insertAdjacentHTML('beforeend',
