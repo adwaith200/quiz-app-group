@@ -2637,8 +2637,13 @@ const quectrl = async () => {
       count++;
     }
 
-    const result = await (0, _modelque.senddata)(count);
-    questionsobj.sendtoprofile(result);
+    if (values === null) {
+      const result = await (0, _modelque.senddata)(count);
+      questionsobj.sendtoprofile(result);
+    } else {
+      const result = await (0, _modelque.senddata)(count);
+      questionsobj.sendtoprofile(result);
+    }
   };
 
   const persistData = (value, i) => {
@@ -2681,8 +2686,12 @@ const quectrl = async () => {
       }
     });
 
-    for (let i = 0; i < localStorage.length; i++) {
-      evaluate(JSON.parse(localStorage.getItem(`class-${i + 1}`)));
+    if (localStorage.length > 0) {
+      for (let i = 0; i < localStorage.length; i++) {
+        evaluate(JSON.parse(localStorage.getItem(`class-${i + 1}`)));
+      }
+    } else {
+      evaluate(null);
     } // selectedValue.forEach(e=>console.log(e));
     // if(globalselected.length===0)
     // {
