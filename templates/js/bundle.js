@@ -2608,28 +2608,38 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-let globalselected = [];
+const globalselected = [];
 
 const quectrl = async () => {
-  const data = await (0, _modelque.getData)(); //console.log(data);
-
+  localStorage.clear();
+  const data = await (0, _modelque.getData)();
   const questionsobj = new _queviews.default(data);
-  questionsobj.showquestions();
+  questionsobj.showquestions(); // const evaluate=async (options)=>{
+  //     options.forEach((e,i)=>{
+  //         if(e===data[i].answer){
+  //             count++;
+  //         }
+  //         if(globalselected[i]===data[i].answer){
+  //             count++;
+  //         }
+  //     })
+  //     const result=await senddata(count);
+  //     questionsobj.sendtoprofile(result);
+  // }
 
-  const evaluate = async options => {
-    let count = 0;
-    options.forEach((e, i) => {
-      if (e === data[i].answer) {
-        count++;
-      }
-    });
-    console.log(count);
+  let j = -1;
+  let count = 0;
+
+  const evaluate = async values => {
+    j++;
+
+    if (values === data[j].answer) {
+      count++;
+    }
+
     const result = await (0, _modelque.senddata)(count);
-    questionsobj.sendtoprofile(result); // questionsobj.displaymarks(count);
-  }; //    const persistData=(value)=>{
-  //          localStorage.setItem('values', value);
-  //    }
-
+    questionsobj.sendtoprofile(result);
+  };
 
   const persistData = (value, i) => {
     i = i + 1;
@@ -2669,19 +2679,25 @@ const quectrl = async () => {
           break;
         }
       }
-    }); // readStorage() {
-    //     const storage = JSON.parse(localStorage.getItem('likes'));
-    //     // Restoring likes from the localStorage
-    //     if (storage) this.likes = storage;
+    });
+
+    for (let i = 0; i < localStorage.length; i++) {
+      evaluate(JSON.parse(localStorage.getItem(`class-${i + 1}`)));
+    } // selectedValue.forEach(e=>console.log(e));
+    // if(globalselected.length===0)
+    // {
+    //     console.log('yo');
+    //     evaluate(selectedValue);
+    // }
+    // else
+    // {
+    //     console.log('hey');
+    //     console.log(globalselected);
+    //     console.log(selectedValue);
+    //      evaluate(globalselected);
+    //   //  evaluate(selectedValue);
     // }
 
-    selectedValue.forEach(e => console.log(e));
-
-    if (globalselected.length === 0) {
-      evaluate(selectedValue);
-    } else {
-      evaluate(globalselected);
-    }
   });
 };
 
@@ -2695,11 +2711,9 @@ const showchecked = () => {
     const array = document.querySelectorAll(`.${localStorage.key(i)}`); //console.log(array);
 
     array.forEach(ele => {
-      console.log(typeof ele.value, typeof localStorage.getItem(key), `"${ele.value}"` == localStorage.getItem(key));
-
+      //  console.log(typeof(ele.value),typeof(localStorage.getItem(key)),`"${ele.value}"`==localStorage.getItem(key));
       if (`"${ele.value}"` == localStorage.getItem(key)) {
         ele.checked = true;
-        console.log('hey');
       }
     });
   }
@@ -2791,7 +2805,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65200" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59271" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

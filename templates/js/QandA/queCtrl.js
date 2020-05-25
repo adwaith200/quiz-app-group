@@ -2,34 +2,59 @@ import {getData,senddata} from './modelque';
 import Questions from './queviews';
 import {clearResults} from './queviews';
 
-let globalselected=[];
+ const globalselected=[];
+ 
 export const quectrl=async()=>{
+    localStorage.clear();
     const data=await getData();
-    //console.log(data);
+   
 
     const questionsobj= new Questions(data);
     questionsobj.showquestions();
 
-    const evaluate=async (options)=>{
-        let count=0;
-        options.forEach((e,i)=>{
-            if(e===data[i].answer){
-                count++;
+    // const evaluate=async (options)=>{
+        
+    //     options.forEach((e,i)=>{
+    //         if(e===data[i].answer){
+    //             count++;
+    //         }
+    //         if(globalselected[i]===data[i].answer){
+    //             count++;
+
+    //         }
+            
+    //     })
+
+       
+    //     const result=await senddata(count);
+    //     questionsobj.sendtoprofile(result);
+        
+    // }
+
+
+    let j=-1;
+    let count=0;
+    const evaluate=async (values)=>{
+        
+        j++;
+       
+            if(values===data[j].answer){
+                count++;   
             }
-        })
-        console.log(count);
+           
+       
         const result=await senddata(count);
         questionsobj.sendtoprofile(result);
-        // questionsobj.displaymarks(count);
+        
     }
 
 
-//    const persistData=(value)=>{
-//          localStorage.setItem('values', value);
-//    }
+
+
 
     const persistData=(value,i)=>{
         i=i+1;
+       
         localStorage.setItem(`class-${i}`, JSON.stringify(value));
     }
 
@@ -43,13 +68,12 @@ export const quectrl=async()=>{
                 for (const rb of rbs){
                     if(rb.checked){
                         globalselected[i]=rb.value;
+                        
                         persistData( globalselected[i],i);
                         break;
                     }
                 }
             });
-
-
 
             let goToPage=parseInt(btn.dataset.goto);
             clearResults();
@@ -57,7 +81,7 @@ export const quectrl=async()=>{
             showchecked();
            }
      
-    })
+    });
 
     document.querySelector('.submit_data').addEventListener('click',()=>{
 
@@ -69,32 +93,36 @@ export const quectrl=async()=>{
             for (const rb of rbs){
                 if(rb.checked){
                     selectedValue[i]=rb.value;
-                    persistData( selectedValue[i],i);
+                    persistData(selectedValue[i],i);
                     break;
                 }
             }
         })
 
-        
+        for(let i=0;i<localStorage.length;i++){
+            evaluate(JSON.parse(localStorage.getItem(`class-${i+1}`)));
+        }
     
-        // readStorage() {
-        //     const storage = JSON.parse(localStorage.getItem('likes'));
-            
-        //     // Restoring likes from the localStorage
-        //     if (storage) this.likes = storage;
+      
+    
+    
+        // selectedValue.forEach(e=>console.log(e));
+        
+        // if(globalselected.length===0)
+        // {
+        //     console.log('yo');
+        //     evaluate(selectedValue);
         // }
-    
-    
-        selectedValue.forEach(e=>console.log(e));
-        
-        if(globalselected.length===0)
-        {
-            evaluate(selectedValue);
-        }
-        else
-        {
-            evaluate(globalselected);
-        }
+        // else
+        // {
+        //     console.log('hey');
+        //     console.log(globalselected);
+        //     console.log(selectedValue);
+
+        //      evaluate(globalselected);
+        //   //  evaluate(selectedValue);
+
+        // }
     })
 
 }
@@ -108,11 +136,10 @@ const showchecked=()=>{
         const array=document.querySelectorAll(`.${localStorage.key(i)}`);
         //console.log(array);
         array.forEach(ele=>{
-            console.log(typeof(ele.value),typeof(localStorage.getItem(key)),`"${ele.value}"`==localStorage.getItem(key));
+          //  console.log(typeof(ele.value),typeof(localStorage.getItem(key)),`"${ele.value}"`==localStorage.getItem(key));
             if(`"${ele.value}"`==localStorage.getItem(key))
             {
                 ele.checked=true;
-                console.log('hey');
             }
         })
     }    
