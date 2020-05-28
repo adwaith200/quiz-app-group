@@ -11,21 +11,13 @@ class Email{
     }
     createmail()
     {    
-        return nodemailer.createTransport({             //A transport is created using the host,port etc and is returned
-            host:'smtp.mailtrap.io',
-            port:process.env.EMAIL_PORT,
+        return nodemailer.createTransport({
+            service:'gmail',
             auth:{
-                user:'d9426025f171cb',
-                pass:'ea2041dcf458c6'
+                user:process.env.GMAIL_USERNAME,
+                pass:process.env.GMAIL_PASSWORD
             }
-        });
-        // return nodemailer.createTransport({
-        //     service:'gmail',
-        //     auth:{
-        //         user:process.env.GMAIL_USERNAME,
-        //         pass:process.env.GMAIL_PASSWORD
-        //     }
-        // })
+        })
     }
     async sendmail(subject)
     {

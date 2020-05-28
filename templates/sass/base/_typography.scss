@@ -11,40 +11,21 @@
     color:$color-white-primary;
     transition:all .4s;
 
-    @media all and(max-width:415px){
-      margin-bottom:3rem;  
-
-      padding:1rem;
-    }
-
     &:hover{
       color:$color-green-tertiary;
       transform:scale(1.1); 
     }
-}
+  }
  
   &_navigation{
-    
-    width:30%;
-    @media all and(max-width:415px){
-      width:100%;
-    }
+    width:20%;
     padding:0 2rem;
     display:flex;
     justify-content: space-around;
-    @media all and(max-width:415px){
-      display:flex;
-      flex-direction:column;
-    }
    
    &__list{
      list-style:none;
      transition:all .4s;
-
-     @media all and(max-width:415px){
-       margin-bottom:3rem;
-      
-     }
 
      &:hover{
        transform:scale(1.1);
@@ -55,14 +36,6 @@
      text-decoration: none;
      color:$color-white-primary;
      transition:all .4s;
-     padding:1rem;
-     
-
-     @media all and(max-width:415px){
-      width:100%;
-      margin-bottom:3rem;
-      
-    }
      
      &:hover{
        color:$color-green-tertiary;
@@ -78,12 +51,6 @@
 .container{
   color:$color-white-primary;
   font-size:2.5rem; 
-  @media all and(max-width:700px){
-    font-size:1.8rem; 
-  }
-  @media all and(max-width:415px){
-    font-size:1.4rem; 
-  }
   &__heading{
     animation: forvisibility 1s ease-out .75s;
     //  animation-fill-mode: backwards;
