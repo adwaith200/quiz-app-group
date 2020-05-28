@@ -2574,6 +2574,10 @@ class Questions {
 
     displayButtons(this.data, page, limit);
   } //end of showfunction
+  // displaymarks(count){
+  //     console.log(elements.profile_details);
+  //     elements.profile_details.insertAdjacentHTML("beforeend",`<span class="testmarks">Marks: ${count}/10</span>`);
+  // }
 
 
   sendtoprofile(result) {
@@ -2604,32 +2608,42 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-let globalselected = [];
+const globalselected = [];
 
 const quectrl = async () => {
   localStorage.clear();
-  const data = await (0, _modelque.getData)(); //console.log(data);
-
+  const data = await (0, _modelque.getData)();
   const questionsobj = new _queviews.default(data);
-  questionsobj.showquestions();
+  questionsobj.showquestions(); // const evaluate=async (options)=>{
+  //     options.forEach((e,i)=>{
+  //         if(e===data[i].answer){
+  //             count++;
+  //         }
+  //         if(globalselected[i]===data[i].answer){
+  //             count++;
+  //         }
+  //     })
+  //     const result=await senddata(count);
+  //     questionsobj.sendtoprofile(result);
+  // }
 
-  const evaluate = async () => {
-    let count = 0;
+  let j = -1;
+  let count = 0;
 
-    for (let k = 0; k < localStorage.length; ++k) {
-      const kei = localStorage.key(k);
-      let no = parseInt(kei.split('-')[1]);
-      no = no - 1;
-      console.log(`"${data[no].answer}"`, localStorage.getItem(kei));
+  const evaluate = async values => {
+    j++;
 
-      if (`"${data[no].answer}"` === localStorage.getItem(kei)) {
-        console.log('yo');
-        count++;
-      }
+    if (values === data[j].answer) {
+      count++;
     }
 
-    const result = await (0, _modelque.senddata)(count);
-    questionsobj.sendtoprofile(result);
+    if (values === null) {
+      const result = await (0, _modelque.senddata)(count);
+      questionsobj.sendtoprofile(result);
+    } else {
+      const result = await (0, _modelque.senddata)(count);
+      questionsobj.sendtoprofile(result);
+    }
   };
 
   const persistData = (value, i) => {
@@ -2671,13 +2685,28 @@ const quectrl = async () => {
         }
       }
     });
-    selectedValue.forEach(e => console.log(e));
 
-    if (globalselected.length === 0) {
-      evaluate();
+    if (localStorage.length > 0) {
+      for (let i = 0; i < localStorage.length; i++) {
+        evaluate(JSON.parse(localStorage.getItem(`class-${i + 1}`)));
+      }
     } else {
-      evaluate();
-    }
+      evaluate(null);
+    } // selectedValue.forEach(e=>console.log(e));
+    // if(globalselected.length===0)
+    // {
+    //     console.log('yo');
+    //     evaluate(selectedValue);
+    // }
+    // else
+    // {
+    //     console.log('hey');
+    //     console.log(globalselected);
+    //     console.log(selectedValue);
+    //      evaluate(globalselected);
+    //   //  evaluate(selectedValue);
+    // }
+
   });
 };
 
@@ -2691,11 +2720,9 @@ const showchecked = () => {
     const array = document.querySelectorAll(`.${localStorage.key(i)}`); //console.log(array);
 
     array.forEach(ele => {
-      console.log(typeof ele.value, typeof localStorage.getItem(key), `"${ele.value}"` == localStorage.getItem(key));
-
+      //  console.log(typeof(ele.value),typeof(localStorage.getItem(key)),`"${ele.value}"`==localStorage.getItem(key));
       if (`"${ele.value}"` == localStorage.getItem(key)) {
         ele.checked = true;
-        console.log('hey');
       }
     });
   }
@@ -2787,7 +2814,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63868" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61893" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -3,33 +3,31 @@ import {elements} from './baseque';
 console.log(elements.profile_details)
 
 
-export async function clearResults(){
+    export async function clearResults(){
     elements.qa_body.innerHTML="";
     document.querySelector('.buttons').innerHTML="";
-}
+    }
 
-function createButtons(page,type){
+    function createButtons(page,type){
     const button=`<button class="buttons_paginationBtn" data-goto=${type === 'prev' ? page - 1 : page + 1}">
                  <span>page-${type==='prev'? page - 1: page + 1}</span>
      </button>`   
      return button;
-}
+    }
 
  
-function displayButtons(data,page,limit){
-    const totalquestions=data.length;
-    const pages=totalquestions/limit;
-    let buttons;
-    if(page==1)
-    {
-        buttons=createButtons(page,'next');
-    }
-    else
-    {
-        buttons=createButtons(page,'prev');
-    }
-    document.querySelector('.buttons').insertAdjacentHTML("afterbegin",buttons);
-}
+    function displayButtons(data,page,limit){
+         const totalquestions=data.length;
+         const pages=totalquestions/limit;
+         let buttons;
+         if(page==1){
+             buttons=createButtons(page,'next');
+         }
+         else{
+             buttons=createButtons(page,'prev');
+         }
+         document.querySelector('.buttons').insertAdjacentHTML("afterbegin",buttons);
+     }
 
 
 
@@ -39,6 +37,8 @@ export default class Questions{
     constructor (data){
         this.data=data;
     }
+
+    
 
     showquestions(page=1,limit=5){
 
@@ -77,7 +77,11 @@ export default class Questions{
         displayButtons(this.data,page,limit);
     }//end of showfunction
 
-    
+
+    // displaymarks(count){
+    //     console.log(elements.profile_details);
+    //     elements.profile_details.insertAdjacentHTML("beforeend",`<span class="testmarks">Marks: ${count}/10</span>`);
+    // }
     sendtoprofile(result){
         console.log('hello');
         console.log(result.data.status);

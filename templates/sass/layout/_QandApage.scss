@@ -4,6 +4,9 @@
         flex-direction:column;
        
         width:60vw;
+        @media all and(max-width:415px){
+            width:90vw;
+        }
         margin:5rem auto;
     
         
@@ -11,9 +14,15 @@
     &_box{
         padding:1rem 5rem 0rem 5rem;
         &:not(:last-child){
-        align-self: center;
+            align-self: center;
+      
     }
-       margin-bottom: 1.3rem;
+    @media all and(max-width:415px){
+        padding: .5rem 1rem 0rem 1rem;
     }
+     margin-bottom: 1.3rem;
+
+    
+  }
 
 }
