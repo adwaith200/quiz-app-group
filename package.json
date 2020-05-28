@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "node server.js",
+    "dev": "nodemon server.js",
     "watch:js": "parcel watch ./templates/js/index.js --out-dir ./templates/js --out-file bundle.js",
     "build:js": "parcel build ./templates/js/index.js --out-dir ./templates/js --out-file bundle.js"
   },
@@ -31,5 +32,8 @@
   },
   "browserslist": [
     "last 10 Chrome versions"
-  ]
+  ],
+  "engines": {
+    "node": ">=10.0.0"
+  }
 }
