@@ -18,7 +18,7 @@ export default class Signup{
             formmdata.append('photo',this.photo);
             const data=await axios({
                 method:'POST',
-                url:'http://127.0.0.1:3000/user/signup',
+                url:'/user/signup',
                 data:formmdata
             });
             console.log(data)

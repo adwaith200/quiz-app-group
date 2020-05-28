@@ -58,8 +58,9 @@ exports.signup=async(req,res,next)=>{
 //Handles with the login request
 exports.login=async(req,res,next)=>{
     try{
+        console.log('Loginn');
         const {email,password}=req.body;                //Details are extracted from req.body
-        console.log(req.body);
+        console.log(email,password);
         const userdata=await User.findOne({email:email}).select('password');       //An existing account search based on email
         if(!userdata ||!await userdata.checkpassword(password,userdata.password))       //Checked if account exists and password entered matches with one stored in database
         {

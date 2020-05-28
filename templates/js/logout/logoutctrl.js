@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const logoutctrl=async ()=>{
     try{
-        const userdata=await axios('http://127.0.0.1:3000/user/logout');
+        const userdata=await axios('/user/logout');
         console.log(userdata);
         location.reload(true);
     }catch(err)

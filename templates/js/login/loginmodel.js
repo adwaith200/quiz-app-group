@@ -5,7 +5,7 @@ export default class Login{
         this.password=password;
         
     }
-
+ 
     async uploadloginData(){
         try{
             console.log(this.email,this.password);
@@ -14,12 +14,13 @@ export default class Login{
             // formmdata.append('password',this.password);
             const data=await axios({
                 method:'POST',
-                url:'http://127.0.0.1:3000/user/login',
+                url:'/user/login',
                 data:{
                     email:this.email,
                     password:this.password
                 }
             });
+            console.log('login done');
             console.log(data);
             if(data.data.status==='success')
             {

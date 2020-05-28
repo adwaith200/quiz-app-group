@@ -3,7 +3,7 @@ import axios from 'axios';
 export const getData=async()=>{
     try{
        
-        const result=await axios('http://127.0.0.1:3000/questions');
+        const result=await axios('/questions');
         console.log(result);
         return result.data.data.questiondata ;
 
@@ -17,7 +17,7 @@ export const senddata=async(count)=>{
     try{
         const userdata=await axios({
             method:'PATCH',
-            url:'http://127.0.0.1:3000/user/updatemarks',
+            url:'/user/updatemarks',
             data:{
                 marks:count
             }

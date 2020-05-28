@@ -13,9 +13,9 @@ mongoose.connect(db,{
     useNewUrlParser:true,
     useCreateIndex:true,
     useFindAndModify:false
-}).then(()=>console.log('Database connected'));
+}).then(()=>console.log('Database connected')).catch(()=>console.log('not connected'));
 
-const port=process.env.port||3000;
+const port=process.env.PORT||3000;
 
 app.listen(port,()=>{
     console.log(`server running on port ${port}`);
