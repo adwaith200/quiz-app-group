@@ -6,8 +6,8 @@ const mongoose=require('mongoose');
 dotenv.config({path:'./config.env'});
 
 const dbpass=process.env.DATABASE_PASSWORD;
-
-const db=process.env.DATABASE.replace('<password>',dbpass);
+let DATABASE=`mongodb+srv://adwaith:<password>@cluster0-9ftjw.mongodb.net/quizapp2`;
+const db=DATABASE.replace('<password>',dbpass);
 
 mongoose.connect(db,{
     useNewUrlParser:true,
